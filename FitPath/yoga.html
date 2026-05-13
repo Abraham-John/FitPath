@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<title>Yoga — FitPath</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.yoga-hero{background:linear-gradient(135deg,#3d1a5f 0%,#5b2d8e 60%,#7c3aed 100%);}
+.asana-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem;}
+.asana-card{background:white;border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius);overflow:hidden;transition:all 0.3s;}
+.asana-card:hover{transform:translateY(-5px);box-shadow:var(--shadow-lg);}
+.asana-visual{height:140px;display:flex;align-items:center;justify-content:center;font-size:4.5rem;background:var(--parchment);}
+.asana-body{padding:1.6rem;}
+.asana-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--forest);font-weight:700;margin-bottom:0.2rem;}
+.asana-sanskrit{font-size:0.7rem;color:var(--muted);font-style:italic;margin-bottom:1rem;}
+.asana-benefits{list-style:none;margin-bottom:1rem;}
+.asana-benefits li{font-size:0.78rem;color:var(--muted);padding:0.3rem 0;border-bottom:1px solid rgba(26,58,42,0.05);display:flex;gap:0.5rem;}
+.asana-benefits li::before{content:'✓';color:var(--mint);font-weight:700;}
+.asana-tags{display:flex;flex-wrap:wrap;gap:0.4rem;}
+.asana-steps{background:var(--parchment);border-radius:var(--radius-sm);padding:1rem;margin-top:1rem;display:none;}
+.asana-card:hover .asana-steps{display:block;}
+.asana-steps-title{font-size:0.7rem;font-weight:700;color:var(--forest);text-transform:uppercase;letter-spacing:0.06em;margin-bottom:0.5rem;}
+.asana-steps ol{padding-left:1.2rem;}
+.asana-steps li{font-size:0.72rem;color:var(--muted);margin:0.25rem 0;}
+
+.benefits-section{background:var(--forest);}
+.benefits-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1.2rem;}
+.benefit-card{background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);border-radius:var(--radius);padding:1.6rem;text-align:center;}
+.benefit-icon{font-size:2rem;margin-bottom:0.75rem;}
+.benefit-name{font-weight:700;color:white;font-size:0.9rem;margin-bottom:0.4rem;}
+.benefit-desc{font-size:0.75rem;color:rgba(255,255,255,0.6);line-height:1.6;}
+
+.prana-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.5rem;margin-top:1.5rem;}
+.prana-card{background:white;border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius);padding:1.5rem;transition:all 0.3s;}
+.prana-card:hover{transform:translateY(-3px);box-shadow:var(--shadow);}
+.prana-name{font-family:'Cormorant Garamond',serif;font-size:1.2rem;color:var(--forest);font-weight:700;margin-bottom:0.3rem;}
+.prana-desc{font-size:0.78rem;color:var(--muted);margin-bottom:0.8rem;}
+.prana-steps{font-size:0.72rem;color:var(--sage);background:var(--parchment);padding:0.8rem;border-radius:var(--radius-sm);}
+
+.condition-tabs{display:flex;gap:0.5rem;flex-wrap:wrap;margin-bottom:2rem;justify-content:center;}
+.ctab{background:white;border:1.5px solid rgba(26,58,42,0.12);color:var(--muted);padding:0.5rem 1.2rem;border-radius:50px;font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s;font-family:'Outfit',sans-serif;}
+.ctab:hover,.ctab.active{background:var(--forest);color:white;border-color:var(--forest);}
+.condition-panel{display:none;background:white;border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius);padding:2rem;}
+.condition-panel.active{display:grid;grid-template-columns:auto 1fr;gap:2rem;align-items:center;}
+.cond-icon{font-size:3.5rem;text-align:center;background:var(--parchment);border-radius:50%;width:90px;height:90px;display:flex;align-items:center;justify-content:center;margin:0 auto;}
+.cond-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:var(--forest);font-weight:700;margin-bottom:0.5rem;}
+.cond-desc{font-size:0.85rem;color:var(--muted);line-height:1.7;margin-bottom:1rem;}
+.cond-asanas{list-style:none;display:flex;flex-direction:column;gap:0.5rem;}
+.cond-asana{background:var(--parchment);border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius-sm);padding:0.7rem 1rem;display:flex;justify-content:space-between;align-items:center;font-size:0.82rem;font-weight:600;color:var(--forest);}
+.cond-asana-eng{font-size:0.7rem;color:var(--muted);font-weight:400;}
+
+.routine-section{background:var(--cream);}
+.routine-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:0.8rem;margin-top:1.5rem;}
+.routine-day{background:white;border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius-sm);padding:1rem;text-align:center;}
+.routine-day-name{font-weight:700;color:var(--forest);font-size:0.8rem;margin-bottom:0.5rem;}
+.routine-day-poses{font-size:0.68rem;color:var(--muted);line-height:1.5;}
+
+@media(max-width:900px){
+  .condition-panel.active{grid-template-columns:1fr;text-align:center;}
+  .routine-grid{grid-template-columns:repeat(2,1fr);}
+  .cond-asana{flex-direction:column;text-align:center;gap:0.3rem;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Fit<span>Path</span></a>
+  
+  <!-- LEARNING CONTENT HYPERLINKS -->
+  <div class="dynamic-nav-links">
+    <a href="nutrition.html"> Nutrition</a>
+    <a href="exercise.html"> Exercise</a>
+    <a href="strength.html"> Strength</a>
+    <a href="yoga.html"> Yoga</a>
+  </div>
+  
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="hub.html">Hub</a></li>
+  </ul>
+  <a href="myplan.html" class="nav-cta">Get My Plan →</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">🏠 Home</a>
+  <a href="hub.html">🎯 Hub</a>
+  <a href="dashboard.html">📊 Progress</a>
+  <a href="myplan.html">⚡ My Plan</a>
+  <a href="nutrition.html">🥗 Nutrition</a>
+  <a href="exercise.html">🏃 Exercise</a>
+  <a href="strength.html">💪 Strength</a>
+  <a href="yoga.html">🧘 Yoga</a>
+  <a href="calculators.html">🧮 Calculators</a>
+  <a href="quiz.html">📝 Quiz</a>
+  <a href="coach.html">🤖 AI Coach</a>
+  <a href="meditation.html">🧘 Meditation</a>
+  <a href="timer.html">⏱️ Timer</a>
+</div>
+
+<div class="breadcrumb"><div class="breadcrumb-inner"><a href="index.html">Home</a><span>›</span><span>Yoga</span></div></div>
+
+<div class="yoga-hero">
+  <div class="page-hero" style="margin-top:0;background:none;">
+    <div class="page-hero-inner">
+      <div>
+        <div class="hero-eyebrow">Mind, Body & Soul</div>
+        <h1>Yoga &<br><em>Mindful Wellness</em></h1>
+        <p>Yoga is more than flexibility — it is the union of breath, movement, and awareness. Discover how ancient practices address modern health challenges like diabetes, PCOS, and stress.</p>
+        <div class="hero-pill-row">
+          <span class="hero-pill">12+ Asanas</span><span class="hero-pill">PCOS Relief</span><span class="hero-pill">Diabetes Management</span><span class="hero-pill">Stress Reduction</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-stat"><span class="stat-num">12+</span><span class="stat-label">&nbsp;Asanas Covered</span></div>
+        <div class="hero-card-stat"><span class="stat-num">4</span><span class="stat-label">&nbsp;Conditions Addressed</span></div>
+        <div class="hero-card-stat"><span class="stat-num">∞</span><span class="stat-label">&nbsp;Mental Benefits</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHY YOGA -->
+<section style="background:white;">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="eyebrow">The Ancient Science</span>
+        <h2 class="section-title">Why <em>Yoga?</em></h2>
+        <div class="divider"></div>
+        <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin-bottom:1.2rem;">Yoga is an ancient Indian discipline that combines physical postures (asanas), breath control (pranayama), and meditation to promote physical, mental, and spiritual well-being. It originated over 5,000 years ago in ancient India.</p>
+        <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin-bottom:1.5rem;">Modern science validates what ancient practitioners always knew: regular yoga practice reduces cortisol, improves insulin sensitivity, lowers blood pressure, reduces anxiety, and increases mindfulness — making it one of the most complete health interventions available.</p>
+        <div class="quote-block"><div class="quote-text">"Yoga is not about touching your toes. It is about what you learn on the way down."</div><div class="quote-author">— Jigar Gor</div></div>
+      </div>
+      <div class="accordion">
+        <div class="accordion-item"><button class="accordion-btn">Is yoga suitable for complete beginners? <span class="accordion-arrow">▼</span></button><div class="accordion-body">Absolutely. Yoga is infinitely scalable. Every asana has modifications for different flexibility and strength levels. Start with 15–20 minutes daily of beginner-friendly poses like Sukhasana (easy pose), Balasana (child's pose), and Tadasana (mountain pose). Consistency matters far more than intensity.</div></div>
+        <div class="accordion-item"><button class="accordion-btn">How does yoga help with PCOS? <span class="accordion-arrow">▼</span></button><div class="accordion-body">PCOS is strongly linked to insulin resistance and elevated cortisol (stress hormone). Yoga addresses both. Specific asanas like Baddha Konasana stimulate the ovaries and improve blood flow to reproductive organs. Pranayama reduces cortisol. Regular yoga practice (3–4x/week) has been shown to reduce testosterone levels and improve menstrual regularity in PCOS.</div></div>
+        <div class="accordion-item"><button class="accordion-btn">Can yoga replace exercise for weight loss? <span class="accordion-arrow">▼</span></button><div class="accordion-body">Yoga burns fewer calories than cardio or strength training, so it's not ideal as the only weight loss tool. However, dynamic styles like Power Yoga and Ashtanga do burn significant calories. Yoga's true weight-loss superpower is stress reduction — high cortisol promotes fat storage, especially around the abdomen. Yoga + diet + moderate cardio is an excellent combination.</div></div>
+        <div class="accordion-item"><button class="accordion-btn">Best time of day to practice yoga? <span class="accordion-arrow">▼</span></button><div class="accordion-body">Morning practice (Brahma Muhurta — before sunrise) is traditionally recommended. The mind is quiet, digestion is complete, and energizing asanas set a positive tone for the day. Evening yoga (restorative poses, yin) is excellent for stress relief and sleep. The best time is simply whenever you can practice consistently.</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- YOGA BENEFITS -->
+<section class="benefits-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow" style="background:rgba(255,255,255,0.15);color:white;">Science-Backed</span>
+      <h2 class="section-title" style="color:white;">Benefits of <em>Yoga</em></h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.65);">Clinically proven benefits that extend far beyond physical flexibility.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card"><div class="benefit-icon">🧘</div><div class="benefit-name">Flexibility</div><div class="benefit-desc">Lengthens muscles, improves joint range of motion, reduces stiffness</div></div>
+      <div class="benefit-card"><div class="benefit-icon">🧠</div><div class="benefit-name">Mental Clarity</div><div class="benefit-desc">Reduces anxiety, depression, improves focus and emotional regulation</div></div>
+      <div class="benefit-card"><div class="benefit-icon">❤️</div><div class="benefit-name">Heart Health</div><div class="benefit-desc">Lowers blood pressure, reduces resting heart rate</div></div>
+      <div class="benefit-card"><div class="benefit-icon">😴</div><div class="benefit-name">Better Sleep</div><div class="benefit-desc">Reduces cortisol, activates parasympathetic system</div></div>
+      <div class="benefit-card"><div class="benefit-icon">🩸</div><div class="benefit-name">Blood Sugar</div><div class="benefit-desc">Improves insulin sensitivity in diabetics</div></div>
+      <div class="benefit-card"><div class="benefit-icon">💪</div><div class="benefit-name">Core Strength</div><div class="benefit-desc">Most asanas require significant core engagement</div></div>
+      <div class="benefit-card"><div class="benefit-icon">🌸</div><div class="benefit-name">Hormonal Balance</div><div class="benefit-desc">Supports thyroid and reproductive hormones</div></div>
+      <div class="benefit-card"><div class="benefit-icon">✨</div><div class="benefit-name">Self-Confidence</div><div class="benefit-desc">Builds body awareness and positive self-image</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ASANA EXPLORER -->
+<section style="background:var(--cream);">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Asana Guide</span>
+      <h2 class="section-title">Yoga <em>Asana Explorer</em></h2>
+      <p class="section-sub">Hover over any card to see step-by-step instructions. Each asana is mapped to specific health conditions.</p>
+    </div>
+    <div class="asana-grid">
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#d8f3dc,#b7e4c7);">☀️</div>
+        <div class="asana-body">
+          <div class="asana-name">Surya Namaskar</div>
+          <div class="asana-sanskrit">Sun Salutation — 12-pose flowing sequence</div>
+          <ul class="asana-benefits"><li>Full-body warm-up and calorie burn</li><li>Regulates blood sugar levels</li><li>Improves cardiovascular endurance</li><li>Synchronizes breath with movement</li></ul>
+          <div class="asana-tags"><span class="pill pill-green">Fat Loss</span><span class="pill pill-blue">Diabetes</span><span class="pill pill-gold">General</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Stand tall in Tadasana, feet together</li><li>Inhale, raise arms overhead (Hasta Uttanasana)</li><li>Exhale, fold forward (Uttanasana)</li><li>Step back to plank, lower to Chaturanga</li><li>Inhale into Upward Dog, exhale to Downward Dog</li><li>Step forward, rise back up — repeat 5–12 rounds</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#e8d5f5,#d7b8f5);">🦋</div>
+        <div class="asana-body">
+          <div class="asana-name">Baddha Konasana</div>
+          <div class="asana-sanskrit">Butterfly Pose / Bound Angle Pose</div>
+          <ul class="asana-benefits"><li>Stimulates ovaries — relieves PCOS</li><li>Opens hips and groin deeply</li><li>Improves blood flow to pelvis</li><li>Reduces menstrual discomfort</li></ul>
+          <div class="asana-tags"><span class="pill pill-pink">PCOS</span><span class="pill pill-purple">Stress</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Sit on the floor, spine tall</li><li>Bring soles of feet together, knees out</li><li>Hold feet with both hands</li><li>Gently press knees toward the floor</li><li>Flutter knees like butterfly wings (optional)</li><li>Hold for 2–5 minutes, breathe deeply</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#fff3cd,#ffe69c);">🔺</div>
+        <div class="asana-body">
+          <div class="asana-name">Trikonasana</div>
+          <div class="asana-sanskrit">Triangle Pose</div>
+          <ul class="asana-benefits"><li>Reduces abdominal fat</li><li>Stimulates abdominal organs</li><li>Improves digestion and metabolism</li><li>Strengthens legs and core</li></ul>
+          <div class="asana-tags"><span class="pill pill-gold">Obesity</span><span class="pill pill-green">General</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Stand wide — feet 3–4 feet apart</li><li>Turn right foot out 90°, left foot slightly in</li><li>Extend arms parallel to floor</li><li>Reach right hand to right shin or floor</li><li>Left arm reaches straight up</li><li>Hold 30–60 seconds, repeat both sides</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#fce4ec,#f8bbd0);">🏹</div>
+        <div class="asana-body">
+          <div class="asana-name">Dhanurasana</div>
+          <div class="asana-sanskrit">Bow Pose</div>
+          <ul class="asana-benefits"><li>Massages the pancreas — helps diabetes</li><li>Stimulates reproductive organs (PCOS)</li><li>Strengthens entire back chain</li><li>Opens chest and shoulders</li></ul>
+          <div class="asana-tags"><span class="pill pill-blue">Diabetes</span><span class="pill pill-pink">PCOS</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Lie face down, arms at sides</li><li>Bend knees, reach back to hold ankles</li><li>Inhale — lift chest and thighs off the ground</li><li>Body forms a bow shape, weight on abdomen</li><li>Look forward, breathe steadily</li><li>Hold 20–30 seconds, release slowly</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#e3f2fd,#bbdefb);">🌉</div>
+        <div class="asana-body">
+          <div class="asana-name">Setu Bandhasana</div>
+          <div class="asana-sanskrit">Bridge Pose</div>
+          <ul class="asana-benefits"><li>Strengthens glutes and lower back</li><li>Helps metabolic syndrome</li><li>Reduces anxiety and fatigue</li><li>Improves thyroid function</li></ul>
+          <div class="asana-tags"><span class="pill pill-purple">Stress</span><span class="pill pill-green">Strength</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Lie on back, knees bent, feet flat, hip-width</li><li>Arms beside body, palms down</li><li>Inhale — press feet into floor, lift hips</li><li>Squeeze glutes, hold the bridge position</li><li>Optionally clasp hands under back</li><li>Hold 30–60 seconds, lower slowly</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#d8f3dc,#95d5b2);">🌲</div>
+        <div class="asana-body">
+          <div class="asana-name">Vrikshasana</div>
+          <div class="asana-sanskrit">Tree Pose</div>
+          <ul class="asana-benefits"><li>Improves balance and proprioception</li><li>Strengthens ankles, calves and core</li><li>Builds focus and concentration</li><li>Boosts confidence and self-esteem</li></ul>
+          <div class="asana-tags"><span class="pill pill-green">General</span><span class="pill pill-purple">Confidence</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Stand in Tadasana (mountain pose)</li><li>Shift weight to left foot</li><li>Place right foot on inner left thigh (not knee)</li><li>Bring palms together at chest (Namaste)</li><li>Find a focal point — gaze steadily</li><li>Hold 30–60 seconds, switch sides</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#fef9c3,#fde68a);">🌀</div>
+        <div class="asana-body">
+          <div class="asana-name">Ardha Matsyendrasana</div>
+          <div class="asana-sanskrit">Half Lord of the Fishes / Seated Twist</div>
+          <ul class="asana-benefits"><li>Massages kidneys and pancreas</li><li>Stimulates digestion and liver</li><li>Reduces blood sugar spikes</li><li>Relieves back stiffness</li></ul>
+          <div class="asana-tags"><span class="pill pill-blue">Diabetes</span><span class="pill pill-gold">Digestion</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Sit with legs extended</li><li>Bend right knee, place foot outside left thigh</li><li>Inhale — sit tall, lengthen spine</li><li>Exhale — twist right, left elbow outside right knee</li><li>Right hand on floor behind you for support</li><li>Hold 30–60 seconds, switch sides</li></ol></div>
+        </div>
+      </div>
+      <div class="asana-card">
+        <div class="asana-visual" style="background:linear-gradient(135deg,#e0f2fe,#bae6fd);">💆</div>
+        <div class="asana-body">
+          <div class="asana-name">Shavasana</div>
+          <div class="asana-sanskrit">Corpse Pose — the most important asana</div>
+          <ul class="asana-benefits"><li>Deep nervous system recovery</li><li>Reduces cortisol (stress hormone)</li><li>Integrates benefits of the practice</li><li>Activates parasympathetic rest response</li></ul>
+          <div class="asana-tags"><span class="pill pill-purple">Stress</span><span class="pill pill-green">Recovery</span></div>
+          <div class="asana-steps"><div class="asana-steps-title">How to do it</div><ol><li>Lie flat on your back, arms at sides</li><li>Feet fall open naturally, palms face up</li><li>Close eyes, relax every muscle completely</li><li>Release control of breath — let it be natural</li><li>Scan from toes to head, consciously releasing tension</li><li>Stay 5–20 minutes — this is not sleeping, it's conscious relaxation</li></ol></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PRANAYAMA SECTION -->
+<section style="background:white;">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Breath Control</span>
+      <h2 class="section-title">Pranayama — <em>Breathing Techniques</em></h2>
+      <p class="section-sub">Pranayama is the practice of controlling breath to influence the flow of prana (life force energy) in the body.</p>
+    </div>
+    <div class="prana-grid">
+      <div class="prana-card"><div class="prana-name">🌬️ Nadi Shodhana</div><div class="prana-desc">Alternate Nostril Breathing — Balances left/right brain, reduces anxiety</div><div class="prana-steps">Close right nostril, inhale left → close left, exhale right → inhale right → close right, exhale left. Repeat 5-10 min.</div></div>
+      <div class="prana-card"><div class="prana-name">💨 Kapalbhati</div><div class="prana-desc">Skull Shining Breath — Strengthens diaphragm, improves digestion</div><div class="prana-steps">Forceful exhalations through nose, passive inhales. Start with 30 breaths, increase to 100. ⚠️ Avoid if pregnant or high BP.</div></div>
+      <div class="prana-card"><div class="prana-name">🐝 Bhramari</div><div class="prana-desc">Humming Bee Breath — Instant stress relief, reduces blood pressure</div><div class="prana-steps">Close eyes, cover ears with thumbs, inhale deeply, exhale while humming like a bee. Repeat 5-7 times.</div></div>
+      <div class="prana-card"><div class="prana-name">🔄 Anulom Vilom</div><div class="prana-desc">Alternate Breathing — Improves lung capacity, heart health</div><div class="prana-steps">Inhale left → exhale right → inhale right → exhale left. Ratio: Inhale 4 sec, hold 4, exhale 4.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- YOGA BY CONDITION -->
+<section style="background:var(--parchment);">
+  <div class="container">
+    <div class="section-header" style="text-align:center;">
+      <span class="eyebrow">Therapeutic Yoga</span>
+      <h2 class="section-title">Yoga by <em>Condition</em></h2>
+      <p class="section-sub" style="margin-left:auto;margin-right:auto;">Specific yoga prescriptions for managing common lifestyle disorders.</p>
+    </div>
+    <div class="condition-tabs">
+      <button class="ctab active" onclick="showCondition('diabetes',this)">🩸 Diabetes</button>
+      <button class="ctab" onclick="showCondition('pcos',this)">🌸 PCOS</button>
+      <button class="ctab" onclick="showCondition('obesity',this)">⚖️ Obesity</button>
+      <button class="ctab" onclick="showCondition('stress',this)">🧠 Stress & Anxiety</button>
+    </div>
+    <div id="cond-diabetes" class="condition-panel active">
+      <div style="text-align:center;"><div class="cond-icon">🩸</div></div>
+      <div>
+        <div class="cond-title">Yoga for Diabetes Management</div>
+        <div class="cond-desc">These asanas stimulate the pancreas, improve insulin sensitivity, and help regulate blood glucose levels. Practice daily for best results alongside diet management.</div>
+        <div class="cond-asanas">
+          <div class="cond-asana">Dhanurasana <span class="cond-asana-eng">Bow Pose — pancreas massage</span></div>
+          <div class="cond-asana">Ardha Matsyendrasana <span class="cond-asana-eng">Seated Twist — stimulates pancreas</span></div>
+          <div class="cond-asana">Surya Namaskar <span class="cond-asana-eng">Sun Salutation — improves glucose uptake</span></div>
+          <div class="cond-asana">Setu Bandhasana <span class="cond-asana-eng">Bridge Pose — improves circulation</span></div>
+          <div class="cond-asana">Shavasana <span class="cond-asana-eng">Corpse Pose — stress and glucose reduction</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="cond-pcos" class="condition-panel">
+      <div style="text-align:center;"><div class="cond-icon">🌸</div></div>
+      <div>
+        <div class="cond-title">Yoga for PCOS Relief</div>
+        <div class="cond-desc">These asanas target the reproductive system, reduce androgens, improve blood flow to the pelvis, and lower stress hormones — all key factors in managing PCOS naturally.</div>
+        <div class="cond-asanas">
+          <div class="cond-asana">Baddha Konasana <span class="cond-asana-eng">Butterfly Pose — ovarian stimulation</span></div>
+          <div class="cond-asana">Dhanurasana <span class="cond-asana-eng">Bow Pose — hormonal regulation</span></div>
+          <div class="cond-asana">Setu Bandhasana <span class="cond-asana-eng">Bridge Pose — pelvic floor strength</span></div>
+          <div class="cond-asana">Surya Namaskar <span class="cond-asana-eng">Sun Salutation — insulin sensitivity</span></div>
+          <div class="cond-asana">Shavasana <span class="cond-asana-eng">Corpse Pose — cortisol reduction</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="cond-obesity" class="condition-panel">
+      <div style="text-align:center;"><div class="cond-icon">⚖️</div></div>
+      <div>
+        <div class="cond-title">Yoga for Weight Management</div>
+        <div class="cond-desc">Dynamic yoga styles burn calories, build lean muscle, and — crucially — reduce emotional eating by managing stress and improving mindfulness around food choices.</div>
+        <div class="cond-asanas">
+          <div class="cond-asana">Surya Namaskar <span class="cond-asana-eng">Sun Salutation — primary calorie burner</span></div>
+          <div class="cond-asana">Trikonasana <span class="cond-asana-eng">Triangle Pose — abdominal fat reduction</span></div>
+          <div class="cond-asana">Virabhadrasana <span class="cond-asana-eng">Warrior Pose — full body strength</span></div>
+          <div class="cond-asana">Navasana <span class="cond-asana-eng">Boat Pose — core and metabolism</span></div>
+          <div class="cond-asana">Ustrasana <span class="cond-asana-eng">Camel Pose — stretches abdomen</span></div>
+        </div>
+      </div>
+    </div>
+    <div id="cond-stress" class="condition-panel">
+      <div style="text-align:center;"><div class="cond-icon">🧠</div></div>
+      <div>
+        <div class="cond-title">Yoga for Stress & Mental Wellness</div>
+        <div class="cond-desc">These restorative asanas activate the parasympathetic nervous system — the "rest and digest" mode — reducing cortisol, slowing heart rate, and calming the mind.</div>
+        <div class="cond-asanas">
+          <div class="cond-asana">Shavasana <span class="cond-asana-eng">Corpse Pose — deep nervous system rest</span></div>
+          <div class="cond-asana">Balasana <span class="cond-asana-eng">Child's Pose — instant calming effect</span></div>
+          <div class="cond-asana">Vrikshasana <span class="cond-asana-eng">Tree Pose — builds focus and calm</span></div>
+          <div class="cond-asana">Viparita Karani <span class="cond-asana-eng">Legs-Up-Wall — reduces anxiety fast</span></div>
+          <div class="cond-asana">Setu Bandhasana <span class="cond-asana-eng">Bridge Pose — opens heart, reduces anxiety</span></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DAILY ROUTINE -->
+<section class="routine-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Your Weekly Practice</span>
+      <h2 class="section-title">7-Day <em>Yoga Routine</em></h2>
+      <p class="section-sub">A balanced weekly practice combining different styles and focus areas.</p>
+    </div>
+    <div class="routine-grid">
+      <div class="routine-day"><div class="routine-day-name">🌞 Monday</div><div class="routine-day-poses">Surya Namaskar (12 rounds)<br>Standing poses</div></div>
+      <div class="routine-day"><div class="routine-day-name">🦋 Tuesday</div><div class="routine-day-poses">Hip openers<br>Baddha Konasana</div></div>
+      <div class="routine-day"><div class="routine-day-name">💪 Wednesday</div><div class="routine-day-poses">Core & Backbends<br>Dhanurasana</div></div>
+      <div class="routine-day"><div class="routine-day-name">🌀 Thursday</div><div class="routine-day-poses">Twists & Forward folds<br>Ardha Matsyendrasana</div></div>
+      <div class="routine-day"><div class="routine-day-name">⚖️ Friday</div><div class="routine-day-poses">Balance & Inversions<br>Vrikshasana</div></div>
+      <div class="routine-day"><div class="routine-day-name">🔥 Saturday</div><div class="routine-day-poses">Full Flow Practice<br>Power Yoga</div></div>
+      <div class="routine-day"><div class="routine-day-name">💆 Sunday</div><div class="routine-day-poses">Restorative & Pranayama<br>Shavasana (20 min)</div></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div><div class="footer-logo">FitPath</div><div class="footer-tagline">Your complete wellness companion for BCA 234.</div></div>
+      <div><div class="footer-col-title">Learn</div><ul class="footer-links-list"><li><a href="nutrition.html">Nutrition</a></li><li><a href="exercise.html">Exercise Science</a></li><li><a href="strength.html">Strength Training</a></li><li><a href="yoga.html">Yoga</a></li></ul></div>
+      <div><div class="footer-col-title">Tools</div><ul class="footer-links-list"><li><a href="calculators.html">Calculators</a></li><li><a href="myplan.html">My Fitness Plan</a></li></ul></div>
+      <div><div class="footer-col-title">Practice</div><ul class="footer-links-list"><li><a href="quiz.html">Quiz</a></li><li><a href="coach.html">AI Coach</a></li></ul></div>
+    </div>
+        <div class="footer-bottom"><p>© 2025 FitPath · BCA 234</p> <p>The First Step towards Wellness</p></div>
+
+  </div>
+</footer>
+<script src="shared.js"></script>
+<script>
+function showCondition(id, btn) {
+  document.querySelectorAll('.condition-panel').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.ctab').forEach(b => b.classList.remove('active'));
+  document.getElementById('cond-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+</script>
+</body>
+</html>

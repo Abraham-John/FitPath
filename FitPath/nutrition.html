@@ -1,0 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nutrition — FitPath</title>
+<link rel="stylesheet" href="style.css">
+<style>
+.nutrition-hero{
+  padding:0;background:linear-gradient(135deg,#1a3a2a 0%,#2d5a3d 60%,#3d6b50 100%);
+}
+/* pyramid */
+.pyramid-section{background:var(--parchment);}
+.pyramid-wrap{display:grid;grid-template-columns:1fr 1.2fr;gap:4rem;align-items:center;}
+.pyramid{display:flex;flex-direction:column;align-items:center;gap:4px;padding:2rem 0;}
+.p-level{
+  display:flex;align-items:center;justify-content:center;
+  border-radius:8px;font-size:0.8rem;font-weight:600;color:white;
+  transition:all 0.3s;cursor:default;
+}
+.p-level:hover{filter:brightness(1.1);transform:scale(1.02);}
+.p-l1{width:100%;height:56px;background:#1a3a2a;}
+.p-l2{width:84%;height:52px;background:#2d5a3d;}
+.p-l3{width:68%;height:48px;background:#52796f;}
+.p-l4{width:52%;height:44px;background:#84a98c;}
+.p-l5{width:36%;height:40px;background:#c9a84c;}
+.p-l6{width:20%;height:36px;background:#a0522d;}
+.p-label{font-size:0.68rem;margin-top:0.5rem;color:var(--muted);text-align:center;}
+
+/* macro cards */
+.macro-section{background:white;}
+.macro-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;}
+.macro-card{
+  border-radius:var(--radius);padding:2rem;color:white;position:relative;overflow:hidden;
+}
+.macro-card::before{content:'';position:absolute;right:-20px;bottom:-20px;width:100px;height:100px;border-radius:50%;background:rgba(255,255,255,0.08);}
+.macro-card.protein{background:linear-gradient(135deg,#1a3a2a,#2d5a3d);}
+.macro-card.carbs{background:linear-gradient(135deg,#92400e,#b45309);}
+.macro-card.fat{background:linear-gradient(135deg,#1e3a5f,#1d4ed8);}
+.macro-icon{font-size:2.2rem;margin-bottom:1rem;}
+.macro-title{font-family:'Cormorant Garamond',serif;font-size:1.4rem;font-weight:700;margin-bottom:0.5rem;}
+.macro-cal{font-size:0.78rem;opacity:0.7;margin-bottom:1rem;}
+.macro-sources{list-style:none;}
+.macro-sources li{font-size:0.8rem;opacity:0.85;padding:0.25rem 0;border-bottom:1px solid rgba(255,255,255,0.1);}
+.macro-sources li:last-child{border-bottom:none;}
+.macro-sources li::before{content:'→ ';opacity:0.6;}
+
+/* disorders */
+.disorder-section{background:var(--cream);}
+.disorder-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:1.5rem;}
+.disorder-card{background:white;border:1px solid rgba(26,58,42,0.1);border-radius:var(--radius);padding:2rem;display:grid;grid-template-columns:auto 1fr;gap:1.5rem;align-items:start;}
+.disorder-icon{font-size:2.5rem;padding:1rem;background:var(--parchment);border-radius:var(--radius-sm);text-align:center;}
+.disorder-name{font-family:'Cormorant Garamond',serif;font-size:1.25rem;font-weight:700;color:var(--forest);margin-bottom:0.4rem;}
+.disorder-def{font-size:0.82rem;color:var(--muted);line-height:1.7;margin-bottom:0.75rem;}
+.disorder-tips{font-size:0.78rem;color:var(--sage);font-weight:600;}
+
+/* micro section */
+.micro-section{background:var(--parchment);}
+.micro-table-wrap{overflow-x:auto;border-radius:var(--radius);border:1px solid rgba(26,58,42,0.1);}
+
+/* calorie zones */
+.calzone-section{background:var(--forest);}
+.calzone-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;margin-top:2rem;}
+.calzone-card{
+  background:rgba(255,255,255,0.08);border:1px solid rgba(255,255,255,0.15);
+  border-radius:var(--radius);padding:2rem;text-align:center;
+}
+.calzone-icon{font-size:2.5rem;margin-bottom:1rem;}
+.calzone-name{font-family:'Cormorant Garamond',serif;font-size:1.4rem;color:white;font-weight:700;margin-bottom:0.5rem;}
+.calzone-def{font-size:0.82rem;color:rgba(255,255,255,0.65);line-height:1.7;margin-bottom:1rem;}
+.calzone-example{font-size:0.78rem;color:var(--gold-light);font-weight:600;}
+
+@media(max-width:900px){
+  .pyramid-wrap,.macro-grid,.disorder-grid,.calzone-grid{grid-template-columns:1fr;}
+}
+</style>
+</head>
+<body>
+<nav>
+  <a href="index.html" class="nav-logo">Fit<span>Path</span></a>
+  
+  <!-- LEARNING CONTENT HYPERLINKS -->
+  <div class="dynamic-nav-links">
+    <a href="nutrition.html"> Nutrition</a>
+    <a href="exercise.html"> Exercise</a>
+    <a href="strength.html"> Strength</a>
+    <a href="yoga.html"> Yoga</a>
+  </div>
+  
+  <ul class="nav-links">
+    <li><a href="index.html">Home</a></li>
+    <li><a href="hub.html">Hub</a></li>
+  </ul>
+  <a href="myplan.html" class="nav-cta">Get My Plan →</a>
+  <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mobile-menu" id="mobile-menu">
+  <a href="index.html">🏠 Home</a>
+  <a href="hub.html">🎯 Hub</a>
+  <a href="dashboard.html">📊 Progress</a>
+  <a href="myplan.html">⚡ My Plan</a>
+  <a href="nutrition.html">🥗 Nutrition</a>
+  <a href="exercise.html">🏃 Exercise</a>
+  <a href="strength.html">💪 Strength</a>
+  <a href="yoga.html">🧘 Yoga</a>
+  <a href="calculators.html">🧮 Calculators</a>
+  <a href="quiz.html">📝 Quiz</a>
+  <a href="coach.html">🤖 AI Coach</a>
+  <a href="meditation.html">🧘 Meditation</a>
+  <a href="timer.html">⏱️ Timer</a>
+</div>
+<div class="breadcrumb"><div class="breadcrumb-inner"><a href="index.html">Home</a><span>›</span><span>Nutrition</span></div></div>
+
+<!-- HERO -->
+<div class="nutrition-hero">
+  <div class="page-hero" style="margin-top:0;background:none;">
+    <div class="page-hero-inner">
+      <div>
+        <div class="hero-eyebrow">Foundation of Fitness</div>
+        <h1>Nutrition &<br><em>Diet Science</em></h1>
+        <p>You cannot out-train a bad diet. Nutrition is the bedrock of every fitness goal — from fat loss to muscle gain. Understand what you eat and why it matters.</p>
+        <div class="hero-pill-row">
+          <span class="hero-pill">Macronutrients</span><span class="hero-pill">Micronutrients</span>
+          <span class="hero-pill">Calorie Balance</span><span class="hero-pill">Lifestyle Disorders</span>
+        </div>
+      </div>
+      <div class="hero-card">
+        <div class="hero-card-stat"><span class="stat-num">3</span><span class="stat-label">&nbsp;Macronutrients</span></div>
+        <div class="hero-card-stat"><span class="stat-num">4</span><span class="stat-label">&nbsp;Lifestyle Disorders Covered</span></div>
+        <div class="hero-card-stat"><span class="stat-num">3</span><span class="stat-label">&nbsp;Calorie Zones to Know</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- WHAT IS NUTRITION -->
+<section style="background:white;">
+  <div class="container">
+    <div class="two-col">
+      <div>
+        <span class="eyebrow">The Basics</span>
+        <h2 class="section-title">What is <em>Nutrition?</em></h2>
+        <div class="divider"></div>
+        <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin-bottom:1.2rem;">Nutrition is the process by which organisms take in and use food substances for energy, growth, and maintenance of life. It is the science that interprets the interaction of nutrients and other substances in food in relation to maintenance, growth, reproduction, and disease of an organism.</p>
+        <p style="color:var(--muted);line-height:1.8;font-size:0.95rem;margin-bottom:1.5rem;">Good nutrition means eating a well-balanced diet so your body gets the nutrients it needs to work properly. Without good nutrition, your body is more prone to disease, infection, fatigue, and poor performance.</p>
+        <div class="quote-block">
+          <div class="quote-text">"Let food be thy medicine and medicine be thy food."</div>
+          <div class="quote-author">— Hippocrates</div>
+        </div>
+      </div>
+      <div>
+        <div class="accordion">
+          <div class="accordion-item">
+            <button class="accordion-btn">What is the difference between Health and Fitness? <span class="accordion-arrow">▼</span></button>
+            <div class="accordion-body"><b>Health</b> is a state of complete physical, mental, and social well-being — not merely the absence of disease. <b>Fitness</b> is the ability to perform physical activity efficiently and effectively. Health is broader; fitness is a component of health. You can be healthy without being an athlete, but fitness significantly improves health outcomes.</div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">What is quantified nutrition? <span class="accordion-arrow">▼</span></button>
+            <div class="accordion-body">Quantified nutrition means tracking your exact food intake — calories, macros, and sometimes micros — using apps or food diaries. It removes guesswork and helps you stay in a calorie deficit for fat loss, surplus for muscle gain, or maintenance for general health. It's not obsessive; it's informed eating.</div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">How does nutrition impact lifestyle disorders? <span class="accordion-arrow">▼</span></button>
+            <div class="accordion-body">Diet is a primary driver of lifestyle disorders. Excess refined carbohydrates raise blood sugar and contribute to Type 2 Diabetes. High saturated fat and caloric surplus lead to obesity. Hormonal imbalances worsened by poor nutrition worsen PCOS. A well-structured diet can prevent, manage, and even reverse these conditions.</div>
+          </div>
+          <div class="accordion-item">
+            <button class="accordion-btn">What is metabolic syndrome? <span class="accordion-arrow">▼</span></button>
+            <div class="accordion-body">Metabolic syndrome is a cluster of conditions that occur together — increased blood pressure, high blood sugar, excess abdominal fat, and abnormal cholesterol — raising the risk of heart disease, stroke, and Type 2 Diabetes. It affects roughly 25% of the global adult population and is largely preventable through diet and exercise.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FOOD PYRAMID -->
+<section class="pyramid-section">
+  <div class="container">
+    <div class="pyramid-wrap">
+      <div>
+        <span class="eyebrow">Visual Guide</span>
+        <h2 class="section-title">The Nutrition <em>Pyramid</em></h2>
+        <div class="divider"></div>
+        <p style="color:var(--muted);line-height:1.8;font-size:0.9rem;margin-bottom:1.5rem;">The nutrition pyramid shows food groups ranked by recommended consumption. The base represents foods to eat most; the tip represents foods to eat sparingly.</p>
+        <div style="display:flex;flex-direction:column;gap:0.6rem;">
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#1a3a2a;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Grains & Cereals — most servings per day</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#2d5a3d;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Vegetables — 3–5 servings</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#52796f;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Fruits — 2–4 servings</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#84a98c;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Dairy & Protein — 2–3 servings</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#c9a84c;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Fats & Oils — use sparingly</span></div>
+          <div style="display:flex;align-items:center;gap:0.8rem;"><div style="width:14px;height:14px;border-radius:3px;background:#a0522d;flex-shrink:0;"></div><span style="font-size:0.82rem;color:var(--muted);">Sweets & Snacks — rarely</span></div>
+        </div>
+      </div>
+      <div>
+        <div class="pyramid">
+          <div class="p-level p-l6">🍬 Sweets</div>
+          <div class="p-level p-l5">🧈 Fats & Oils</div>
+          <div class="p-level p-l4">🥛 Dairy & Protein</div>
+          <div class="p-level p-l3">🍎 Fruits</div>
+          <div class="p-level p-l2">🥦 Vegetables</div>
+          <div class="p-level p-l1">🍞 Grains & Cereals</div>
+          <div class="p-label">Eat more ↓ base · Eat less ↑ top</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MACRONUTRIENTS -->
+<section class="macro-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Core Nutrients</span>
+      <h2 class="section-title">The Three <em>Macronutrients</em></h2>
+      <p class="section-sub">Macronutrients are nutrients required in large amounts. Every calorie you consume comes from one of these three.</p>
+    </div>
+    <div class="macro-grid">
+      <div class="macro-card protein">
+        <div class="macro-icon">🥩</div>
+        <div class="macro-title">Protein</div>
+        <div class="macro-cal">4 kcal per gram · Building & Repair</div>
+        <ul class="macro-sources">
+          <li>Chicken, fish, eggs, dairy</li>
+          <li>Legumes, tofu, paneer</li>
+          <li>Whey/plant protein supplements</li>
+          <li>Goal: 1.6–2.2g per kg bodyweight</li>
+        </ul>
+      </div>
+      <div class="macro-card carbs">
+        <div class="macro-icon">🍞</div>
+        <div class="macro-title">Carbohydrates</div>
+        <div class="macro-cal">4 kcal per gram · Energy & Fuel</div>
+        <ul class="macro-sources">
+          <li>Rice, roti, oats, quinoa</li>
+          <li>Fruits, vegetables, legumes</li>
+          <li>Simple (fast) vs Complex (slow)</li>
+          <li>Primary fuel for the brain & muscles</li>
+        </ul>
+      </div>
+      <div class="macro-card fat">
+        <div class="macro-icon">🥑</div>
+        <div class="macro-title">Fats</div>
+        <div class="macro-cal">9 kcal per gram · Hormones & Absorption</div>
+        <ul class="macro-sources">
+          <li>Nuts, seeds, avocado, olive oil</li>
+          <li>Fatty fish (omega-3)</li>
+          <li>Egg yolks, coconut, ghee</li>
+          <li>Essential for vitamin absorption (A,D,E,K)</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LIFESTYLE DISORDERS -->
+<section class="disorder-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Health Risks</span>
+      <h2 class="section-title">Lifestyle <em>Disorders</em></h2>
+      <p class="section-sub">Conditions caused or worsened by poor nutrition, inactivity, and unhealthy habits — and how to address them.</p>
+    </div>
+    <div class="disorder-grid">
+      <div class="disorder-card">
+        <div class="disorder-icon">🩸</div>
+        <div><div class="disorder-name">Type 2 Diabetes</div><div class="disorder-def">A metabolic disease where the body cannot use insulin effectively, resulting in high blood sugar. Linked to excess refined carbohydrate intake and physical inactivity.</div><div class="disorder-tips">✓ Low-glycemic diet · Regular exercise · Weight management</div></div>
+      </div>
+      <div class="disorder-card">
+        <div class="disorder-icon">⚖️</div>
+        <div><div class="disorder-name">Obesity</div><div class="disorder-def">Excess accumulation of body fat (BMI &gt;30) that poses serious health risks including heart disease, diabetes, and joint problems. Result of prolonged calorie surplus.</div><div class="disorder-tips">✓ Calorie deficit diet · Cardio + resistance training · Sleep hygiene</div></div>
+      </div>
+      <div class="disorder-card">
+        <div class="disorder-icon">🌸</div>
+        <div><div class="disorder-name">PCOS</div><div class="disorder-def">Polycystic Ovary Syndrome — a hormonal disorder causing irregular menstrual cycles, excess androgens, and often weight gain. Strongly linked to insulin resistance.</div><div class="disorder-tips">✓ Anti-inflammatory diet · Yoga + light cardio · Stress reduction</div></div>
+      </div>
+      <div class="disorder-card">
+        <div class="disorder-icon">💔</div>
+        <div><div class="disorder-name">Metabolic Syndrome</div><div class="disorder-def">A cluster of conditions — high blood pressure, blood sugar, cholesterol, and abdominal fat — that dramatically increase the risk of heart disease and diabetes.</div><div class="disorder-tips">✓ Mediterranean-style diet · Daily movement · Reduce processed food</div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MICRONUTRIENTS -->
+<section class="micro-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow">Vitamins & Minerals</span>
+      <h2 class="section-title">Essential <em>Micronutrients</em></h2>
+      <p class="section-sub">Micronutrients are vitamins and minerals needed in small amounts but are critical for normal function, immunity, and metabolism.</p>
+    </div>
+    <div class="micro-table-wrap">
+      <table class="data-table">
+        <thead><tr><th>Nutrient</th><th>Type</th><th>Key Function</th><th>Food Source</th></tr></thead>
+        <tbody>
+          <tr><td>Vitamin C</td><td><span class="pill pill-blue">Vitamin</span></td><td>Immunity, collagen, antioxidant</td><td>Citrus, amla, bell peppers</td></tr>
+          <tr><td>Vitamin D</td><td><span class="pill pill-gold">Vitamin</span></td><td>Bone health, immunity, mood</td><td>Sunlight, eggs, fortified milk</td></tr>
+          <tr><td>Iron</td><td><span class="pill pill-pink">Mineral</span></td><td>Oxygen transport in blood</td><td>Spinach, lentils, red meat</td></tr>
+          <tr><td>Calcium</td><td><span class="pill pill-pink">Mineral</span></td><td>Bone & teeth strength, muscle function</td><td>Dairy, sesame seeds, ragi</td></tr>
+          <tr><td>Magnesium</td><td><span class="pill pill-pink">Mineral</span></td><td>Muscle recovery, sleep, energy</td><td>Nuts, dark chocolate, leafy greens</td></tr>
+          <tr><td>Zinc</td><td><span class="pill pill-pink">Mineral</span></td><td>Immunity, wound healing, testosterone</td><td>Pumpkin seeds, meat, chickpeas</td></tr>
+          <tr><td>Vitamin B12</td><td><span class="pill pill-blue">Vitamin</span></td><td>Nerve function, red blood cells</td><td>Meat, dairy, eggs (supplement if vegan)</td></tr>
+          <tr><td>Potassium</td><td><span class="pill pill-green">Mineral</span></td><td>Blood pressure, muscle contractions</td><td>Bananas, potatoes, coconut water</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</section>
+
+<!-- CALORIE ZONES -->
+<section class="calzone-section">
+  <div class="container">
+    <div class="section-header">
+      <span class="eyebrow" style="background:rgba(255,255,255,0.15);color:white;">Energy Balance</span>
+      <h2 class="section-title" style="color:white;">Calorie <em>Zones</em></h2>
+      <p class="section-sub" style="color:rgba(255,255,255,0.65);">Calorie balance determines your body composition. Understanding the three zones is the most important concept in nutrition.</p>
+    </div>
+    <div class="calzone-grid">
+      <div class="calzone-card"><div class="calzone-icon">🔥</div><div class="calzone-name">Deficit</div><div class="calzone-def">Consuming fewer calories than you burn. Creates a negative energy balance that forces the body to use stored fat as fuel. The only proven way to lose body fat.</div><div class="calzone-example">Eat 300–500 kcal less than your TDEE</div></div>
+      <div class="calzone-card"><div class="calzone-icon">⚖️</div><div class="calzone-name">Maintenance</div><div class="calzone-def">Calories in = Calories out. Your weight stays stable. Ideal for building habits, maintaining muscle, and general health when you've reached your goal weight.</div><div class="calzone-example">Eat exactly at your TDEE</div></div>
+      <div class="calzone-card"><div class="calzone-icon">💪</div><div class="calzone-name">Surplus</div><div class="calzone-def">Consuming more calories than you burn. Provides the extra energy needed to build new muscle tissue. Best combined with resistance training to direct gains toward muscle.</div><div class="calzone-example">Eat 200–300 kcal above your TDEE</div></div>
+    </div>
+    <div style="text-align:center;margin-top:2.5rem;">
+      <a href="calculators.html" class="btn btn-gold">Calculate Your Calorie Zones →</a>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-inner">
+    <div class="footer-top">
+      <div><div class="footer-logo">FitPath</div><div class="footer-tagline">Your complete wellness companion for BCA 234.</div></div>
+      <div><div class="footer-col-title">Learn</div><ul class="footer-links-list"><li><a href="nutrition.html">Nutrition</a></li><li><a href="exercise.html">Exercise Science</a></li><li><a href="strength.html">Strength Training</a></li><li><a href="yoga.html">Yoga</a></li></ul></div>
+      <div><div class="footer-col-title">Tools</div><ul class="footer-links-list"><li><a href="calculators.html">Calculators</a></li><li><a href="myplan.html">My Fitness Plan</a></li></ul></div>
+      <div><div class="footer-col-title">Practice</div><ul class="footer-links-list"><li><a href="quiz.html">Quiz</a></li><li><a href="coach.html">AI Coach</a></li></ul></div>
+    </div>
+        <div class="footer-bottom"><p>© 2025 FitPath · BCA 234</p> <p>The First Step towards Wellness</p></div>
+
+  </div>
+</footer>
+<script src="shared.js"></script>
+</body>
+</html>
